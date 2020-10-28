@@ -1,0 +1,11 @@
+body {
+  /* background-color: #0b0b1d; */
+  background-color: aliceblue;
+}
+
+.container {
+  /* display: flex; */
+  align-items: center;
+  justify-content: center;
+}
+
