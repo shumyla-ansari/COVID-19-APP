@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -64,8 +65,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar() {
+export default function SearchAppBar({country}) {
+  
   const classes = useStyles();
+
+
 
  
 
@@ -95,11 +99,16 @@ export default function SearchAppBar() {
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              value={country[0]}
+              onChange={(e, newValue) => {
+        console.log(newValue)
+                country[1](newValue);
+              }}
+        
             />
           </div>
         </Toolbar>
       </AppBar>
     </div>
   );
-}
-
+            }
