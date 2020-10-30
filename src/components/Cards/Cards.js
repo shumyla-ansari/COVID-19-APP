@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { Card } from "@material-ui/core";
@@ -18,57 +18,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Cards() {
-  const classes = useStyles();
+ 
 
-  const [countryState, setCountryState] = useState({});
-  const [update, setUpdate] = useState({});
+export default function Cards({update}, {countryState}) {
+ const classes = useStyles();
+console.log(countryState)
+console.log(update)
 
-  //https://covid19.mathdro.id/api/
-  useEffect(() => {
-    const url = "https://covid19.mathdro.id/api/"
-    async function getData(country) {
-      let changeableUrl = url ;
 
-      if(country) {
-        changeableUrl = `${url}/countries/${country}`
-      }
-      const data = await fetch(changeableUrl);
-      const results = await data.json();
-      const timeUpdate = await fetch(changeableUrl);
-      const responseTimeUpdate = await timeUpdate.json();
-      const modifiedData = {
-        infected: results.confirmed,
-        recovered: results.recovered,
-        deaths: results.deaths,
-      };
-      const modifiedTime = {
-        lastUpdate: responseTimeUpdate.lastUpdate,
-      };
-      //const globalResponse = await fetch('https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true');
-
-      setCountryState(modifiedData);
-      setUpdate(modifiedTime);
-    }
-    getData();
-  }, []);
 
   return (
     <div className={classes.root}>
       <Grid>
         <Grid style={{ textAlign: "right", width: "auto" }} item xs={12}>
-          <h4>Last Updated: {new Date(update["lastUpdate"]).toDateString()}</h4>
+          <h4>Last Updated: { update && new Date(update["lastUpdate"]).toDateString()}</h4>
         </Grid>
-        {/* {Object.keys(update).map((key) => {
-        return(
-        <Card elevation={3} className={classes.paper}>
-          <h3>{key.toUpperCase()}</h3>
-          <h3>{update[key] === update["lastUpdate"] && (new Date(update[key]).toDateString())}</h3> 
-
-        </Card> */}
-        {/* )})} */}
+       
         <Grid container spacing={3}>
-          {Object.keys(countryState).map((key, value) => {
+        {countryState && Object.keys(countryState).map((key, value) => {
             return (
               <Grid item xs={12} sm={4} key={uuidv4()}>
                 <Card elevation={3} className={classes.paper}>
@@ -90,3 +57,13 @@ export default function Cards() {
     </div>
   );
 }
+
+
+ {/* {Object.keys(update).map((key) => {
+        return(
+        <Card elevation={3} className={classes.paper}>
+          <h3>{key.toUpperCase()}</h3>
+          <h3>{update[key] === update["lastUpdate"] && (new Date(update[key]).toDateString())}</h3> 
+
+        </Card> */}
+        {/* )})} */}

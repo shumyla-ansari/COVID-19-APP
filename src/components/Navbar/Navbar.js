@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -66,28 +66,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar({handleCountryChange}) {
+export default function SearchAppBar({fetchedCountries}) {
   
   const classes = useStyles();
-  const [fetchedCountries, setfetchedCountries] = useState([])
-
-useEffect(() => {
-  const countries = async() =>{
-  const response = await fetch("https://covid19.mathdro.id/api/countries")
-  const countryResponse = await response.json();
-  console.log(countryResponse)
-  const newCountry = countryResponse.countries.map(key => {
-    return(
-key.name
-)})
-  console.log(newCountry)
-  setfetchedCountries(newCountry)
-  }
-  countries();
-}, [setfetchedCountries])
-  
-
-
 
   return (
     <div className={classes.root}>
@@ -110,12 +91,12 @@ key.name
           Country
         </InputLabel>
         <NativeSelect
-         value=""
-          onChange={(e) => handleCountryChange(e.target.value)}
-          inputProps={{
-            name: 'country',
-            id: 'country-label-placeholder',
-          }}
+        //  value=""
+        //   onChange={(e) => handleCountryChange(e.target.value)}
+        //   inputProps={{
+        //     name: 'country',
+        //     id: 'country-label-placeholder',
+        //   }}
         ><option value = "global">Global</option>
           {fetchedCountries.map((country, key) =>{
           return(<option key={uuidv4()} value={country}>{country}</option>)})}
