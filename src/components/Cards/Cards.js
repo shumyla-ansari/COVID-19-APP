@@ -19,40 +19,67 @@ const useStyles = makeStyles((theme) => ({
 }));
 
  
-
-export default function Cards({update}, {countryState}) {
+//{update}, {recovered}, {deaths}, {confirmed}
+export default function Cards({countryState: {lastUpdate, recovered, deaths, confirmed}}) {
  const classes = useStyles();
-console.log(countryState)
-console.log(update)
+
+//console.log(confirmed)
+console.log(recovered)
 
 
 
   return (
     <div className={classes.root}>
-      <Grid>
-        <Grid style={{ textAlign: "right", width: "auto" }} item xs={12}>
-          <h4>Last Updated: { update && new Date(update["lastUpdate"]).toDateString()}</h4>
-        </Grid>
-       
-        <Grid container spacing={3}>
-        {countryState && Object.keys(countryState).map((key, value) => {
-            return (
-              <Grid item xs={12} sm={4} key={uuidv4()}>
+      <Grid container spacing={3}>
+         <Grid style={{ textAlign: "right", width: "auto" }} item xs={12}>
+          <h4>Last Updated: { lastUpdate && new Date(lastUpdate).toDateString()}</h4>
+        </Grid>  
+
+              {confirmed &&   <Grid item xs={12} sm={4} key={uuidv4()}>
                 <Card elevation={3} className={classes.paper}>
-                  <h3>{key.replace(/ _/g, " ").toUpperCase()}</h3>
+                  <h3>CONFIRMED</h3>
                   <h3>
                     <CountUp
                       start={0}
-                      end={countryState[key].value}
+                      end={confirmed.value}
+                      duration={2.5}
+                      separator=','
+                    ></CountUp>
+                  </h3>
+                </Card>
+                </Grid>}
+           
+           
+                {recovered && 
+              <Grid item xs={12} sm={4} key={uuidv4()}>
+                <Card elevation={3} className={classes.paper}>
+                  <h3>RECOVERED</h3>
+                  <h3>
+                    <CountUp
+                      start={0}
+                      end={recovered.value}
+                      duration={2.5}
+                      separator=','
+                    ></CountUp>
+                  </h3>
+                </Card>
+                </Grid>}
+  
+                {deaths && 
+              <Grid item xs={12} sm={4} key={uuidv4()}>
+                <Card elevation={3} className={classes.paper}>
+                  <h3>DEATHS</h3>
+                  <h3>
+                    <CountUp
+                      start={0}
+                      end={deaths.value}
                       duration={2.5}
                       separator=','
                     ></CountUp>
                   </h3>
                 </Card>
               </Grid>
-            );
-          })}
-        </Grid>
+            }
       </Grid>
     </div>
   );

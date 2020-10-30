@@ -7,27 +7,29 @@ import styles from './App.module.css'
 function App() {
 
   const [countryState, setCountryState] = useState(0);
-  const [update, setUpdate] = useState({});
+  //const [update, setUpdate] = useState({});
   const [fetchedCountries, setfetchedCountries] = useState([]);
   const [ daily, setDaily ] = useState([]);
   
   useEffect(() => {
      const getData = async() => {
 
+
         const data = await fetch("https://covid19.mathdro.id/api/");
-        const results = await data.json();
-        const timeUpdate = await fetch("https://covid19.mathdro.id/api/");
-        const responseTimeUpdate = await timeUpdate.json();
-        const modifiedData = {
-          infected: results.confirmed,
-          recovered: results.recovered,
-          deaths: results.deaths,
-        };
-        const modifiedTime = {
-          lastUpdate: responseTimeUpdate.lastUpdate,
-        };
-       setCountryState(modifiedData);
-       setUpdate(modifiedTime);
+       const results = await data.json();
+
+       // const timeUpdate = await fetch("https://covid19.mathdro.id/api/");
+        //const responseTimeUpdate = await timeUpdate.json();
+        // const modifiedData = {
+        //   infected: results.confirmed,
+        //   recovered: results.recovered,
+        //   deaths: results.deaths,
+        // };
+        // const modifiedTime = {
+        //   lastUpdate: responseTimeUpdate.lastUpdate,
+      
+       setCountryState(results);
+      // setUpdate(modifiedTime);
     
      }
      getData();
@@ -83,8 +85,8 @@ key.name
       
     <SearchAppBar  fetchedCountries={fetchedCountries} />
     
-    <Cards update = {update} 
-          countryState = {countryState}
+    <Cards 
+    countryState = {countryState}
           />
     <Charts daily = {daily} />
     </div>
