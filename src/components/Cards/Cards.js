@@ -26,13 +26,17 @@ export default function Cards() {
 
   //https://covid19.mathdro.id/api/
   useEffect(() => {
-    async function getData() {
-      const data = await fetch("https://covid19.mathdro.id/api/");
+    const url = "https://covid19.mathdro.id/api/"
+    async function getData(country) {
+      let changeableUrl = url ;
+
+      if(country) {
+        changeableUrl = `${url}/countries/${country}`
+      }
+      const data = await fetch(changeableUrl);
       const results = await data.json();
-      const timeUpdate = await fetch("https://covid19.mathdro.id/api/");
+      const timeUpdate = await fetch(changeableUrl);
       const responseTimeUpdate = await timeUpdate.json();
-      console.log(responseTimeUpdate);
-      console.log(results);
       const modifiedData = {
         infected: results.confirmed,
         recovered: results.recovered,
@@ -41,11 +45,7 @@ export default function Cards() {
       const modifiedTime = {
         lastUpdate: responseTimeUpdate.lastUpdate,
       };
-
-      console.log(modifiedData);
-      console.log(modifiedTime);
       //const globalResponse = await fetch('https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true');
-      //let globalData = await globalResponse.json();
 
       setCountryState(modifiedData);
       setUpdate(modifiedTime);

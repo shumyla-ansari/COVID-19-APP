@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
+import InputLabel from '@material-ui/core/InputLabel';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
+import { NativeSelect, FormControl } from '@material-ui/core';
+import { v4 as uuidv4 } from "uuid";
 
 
 
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     display: 'none',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('xs')]: {
       display: 'block',
     },
   },
@@ -65,13 +66,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar({country}) {
+export default function SearchAppBar({handleCountryChange}) {
   
   const classes = useStyles();
+  const [fetchedCountries, setfetchedCountries] = useState([])
+
+useEffect(() => {
+  const countries = async() =>{
+  const response = await fetch("https://covid19.mathdro.id/api/countries")
+  const countryResponse = await response.json();
+  console.log(countryResponse)
+  const newCountry = countryResponse.countries.map(key => {
+    return(
+key.name
+)})
+  console.log(newCountry)
+  setfetchedCountries(newCountry)
+  }
+  countries();
+}, [setfetchedCountries])
+  
 
 
-
- 
 
   return (
     <div className={classes.root}>
@@ -85,28 +101,27 @@ export default function SearchAppBar({country}) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
+         <Typography className={classes.title} variant="h6" noWrap>
             COVID-19 TRACKER
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-              value={country[0]}
-              onChange={(e, newValue) => {
-        console.log(newValue)
-                country[1](newValue);
-              }}
+          
+          <FormControl className={classes.formControl}>
+        <InputLabel shrink htmlFor="country-label-placeholder">
+          Country
+        </InputLabel>
+        <NativeSelect
+         value=""
+          onChange={(e) => handleCountryChange(e.target.value)}
+          inputProps={{
+            name: 'country',
+            id: 'country-label-placeholder',
+          }}
+        ><option value = "global">Global</option>
+          {fetchedCountries.map((country, key) =>{
+          return(<option key={uuidv4()} value={country}>{country}</option>)})}
+        </NativeSelect>
+      </FormControl>
         
-            />
-          </div>
         </Toolbar>
       </AppBar>
     </div>
