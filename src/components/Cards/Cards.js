@@ -18,15 +18,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
- 
-//{update}, {recovered}, {deaths}, {confirmed}
+
 export default function Cards({countryState: {lastUpdate, recovered, deaths, confirmed}}) {
  const classes = useStyles();
-
-//console.log(confirmed)
-console.log(recovered)
-
-
 
   return (
     <div className={classes.root}>
