@@ -1,9 +1,9 @@
 import React from 'react'
-import Chart from 'chart.js'
-import { Line, Bar } from 'react-chartjs-2'
+//import Chart from 'chart.js'
+import { Line } from 'react-chartjs-2'
 
 
-function Charts({daily}, {barCountry} {barData}) {
+function Charts({daily}) {
 
    const chartData = (
        daily.length
@@ -15,23 +15,27 @@ function Charts({daily}, {barCountry} {barData}) {
                         data: daily.map( ({ confirmed })=> confirmed),
                         label: 'Infected',
                         borderColor: '#3333ff',
-                        backgroundColor: "lightblue",
+                        backgroundColor: "#b4ffff",
                         fill: true
                     }, {
                         data: daily.map( ({ deaths })=> deaths),
                         label: 'Deaths',
                         borderColor: 'red',
-                        backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                        backgroundColor: '#ff867c',
                         fill: true
                     }]
                 }}
             />
    ) : null);
 
+
+
+  
+
     return (
         <div >
            
-            {chartData}
+            { chartData}
 
         </div>
     )
