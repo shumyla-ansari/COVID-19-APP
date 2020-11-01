@@ -3,7 +3,7 @@ import Chart from 'chart.js'
 import { Line, Bar } from 'react-chartjs-2'
 
 
-function Charts({daily}) {
+function Charts({daily}, {barCountry} {barData}) {
 
    const chartData = (
        daily.length

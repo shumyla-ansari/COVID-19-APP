@@ -6,8 +6,11 @@ import styles from './App.module.css'
 
 function App() {
 
-  const [countryState, setCountryState] = useState({})
- const [selectedCountry, setSelectedCountry] = useState("");
+  const [countryState, setCountryState] = useState({
+    data: {},
+    country: "Global",
+  })
+ //const [selectedCountry, setSelectedCountry] = useState("");
    const [ daily, setDaily ] = useState([]);
 
 
@@ -15,27 +18,36 @@ useEffect(() => {
   const fetchCountryData = async () => {
   const response = await fetch("https://covid19.mathdro.id/api")
     const data = await response.json()
-      setCountryState(data);
+      setCountryState({
+        data: data
+      });
     }
     fetchCountryData()
 }, []);
 
 
-const handleCountryChange =  async (e) => {
+const handleCountryChange = async (e) => {
   const countryCode = e.target.value;
-  console.log(countryCode)
- setSelectedCountry(countryCode);
- 
+
   const url =
       countryCode === "Global"
         ? "https://covid19.mathdro.id/api"
         : `https://covid19.mathdro.id/api/countries/${countryCode}`;
     const response = await fetch(url)
     const data = await response.json()
-  
+    console.log(countryCode)
  
-  setCountryState(data)
+  setCountryState({
+   data: data, country: countryCode
+  })
+
+  
  };
+
+//  const handleSubmit = event => {
+//   if (countryState) 
+//   event.preventDefault();
+// };
 
   useEffect(() => {
     const fetchData = async() => {
@@ -59,14 +71,15 @@ const handleCountryChange =  async (e) => {
     <div className={styles.container}>
       
     <SearchAppBar  
-    handleCountryChange ={handleCountryChange} 
-    selectedCountry ={selectedCountry}
+    handleCountryChange ={handleCountryChange}
+    //handleSubmit={handleSubmit}
+    countryState={countryState.country}
     />
     
     <Cards 
-    countryState = {countryState}
+    countryState = {countryState.data}
           />
-    <Charts daily = {daily} />
+    <Charts daily = {daily} barCountry={countryState.country}  barData = {countryState.data}/>
     </div>
   );
 }
