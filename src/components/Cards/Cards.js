@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function Cards({countryState: {lastUpdate, recovered, deaths, confirmed}}) {
+export default function Cards({countryState: {lastUpdate, recovered, deaths, cases}}) {
  const classes = useStyles();
 
   return (
@@ -29,13 +29,13 @@ export default function Cards({countryState: {lastUpdate, recovered, deaths, con
           <h4>Last Updated: { lastUpdate && new Date(lastUpdate).toDateString()}</h4>
         </Grid>  
 
-              {confirmed &&   <Grid item xs={12} sm={4} key={uuidv4()}>
+              {cases &&   <Grid item xs={12} sm={4} key={uuidv4()}>
                 <Card elevation={3} className={classes.paper}>
                   <h3>CONFIRMED</h3>
                   <h3>
                     <CountUp
                       start={0}
-                      end={confirmed.value}
+                      end={cases}
                       duration={2.5}
                       separator=','
                     ></CountUp>
@@ -51,7 +51,7 @@ export default function Cards({countryState: {lastUpdate, recovered, deaths, con
                   <h3>
                     <CountUp
                       start={0}
-                      end={recovered.value}
+                      end={recovered}
                       duration={2.5}
                       separator=','
                     ></CountUp>
@@ -66,7 +66,7 @@ export default function Cards({countryState: {lastUpdate, recovered, deaths, con
                   <h3>
                     <CountUp
                       start={0}
-                      end={deaths.value}
+                      end={deaths}
                       duration={2.5}
                       separator=','
                     ></CountUp>

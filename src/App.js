@@ -4,36 +4,17 @@ import Cards from './components/Cards/Cards'
 import Charts from './components/Charts/Charts'
 import styles from './App.module.css'
 import BarChart from './components/Charts/BarChart'
+import Map from './GoogleMaps'
+
+
 
 function App() {
 
-  const barChartData1 = {
-    "confirmed": {
-        "value": 46118051,
-        "detail": "https://covid19.mathdro.id/api/confirmed"
-    },
-    "recovered": {
-        "value": 30864613,
-        "detail": "https://covid19.mathdro.id/api/recovered"
-    },
-    "deaths": {
-        "value": 1196020,
-        "detail": "https://covid19.mathdro.id/api/deaths"
-    },
-    "dailySummary": "https://covid19.mathdro.id/api/daily",
-    "dailyTimeSeries": {
-        "pattern": "https://covid19.mathdro.id/api/daily/[dateString]",
-        "example": "https://covid19.mathdro.id/api/daily/2-14-2020"
-    },
-    "image": "https://covid19.mathdro.id/api/og",
-    "source": "https://github.com/mathdroid/covid19",
-    "countries": "https://covid19.mathdro.id/api/countries",
-    "countryDetail": {
-        "pattern": "https://covid19.mathdro.id/api/countries/[country]",
-        "example": "https://covid19.mathdro.id/api/countries/USA"
-    },
-    "lastUpdate": "2020-11-01T09:24:45.000Z"
-}
+  const location = {
+    address: 'NHS LONDON',
+    lat: 34.80746, 
+    lng: -40.4796,
+  }  
 
   const [barState, setBarState] = useState({
     data: {},
@@ -45,12 +26,15 @@ function App() {
     country: "Global",
   })
 
+  // const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
+  // const [mapZoom, setMapZoom] = useState(3);
+
    const [ daily, setDaily ] = useState([]);
 
 
 useEffect(() => {
   const fetchCountryData = async () => {
-  const response = await fetch("https://covid19.mathdro.id/api")
+  const response = await fetch("https://disease.sh/v3/covid-19/all")
     const data = await response.json()
      setBarState({
        data: data})
@@ -72,8 +56,8 @@ const handleCountryChange = async (e) => {
 
   const url =
       countryCode === "Global"
-        ? "https://covid19.mathdro.id/api"
-        : `https://covid19.mathdro.id/api/countries/${countryCode}`;
+        ? "https://disease.sh/v3/covid-19/all"
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
     const response = await fetch(url)
     const data = await response.json()
     console.log(countryCode)
@@ -90,23 +74,25 @@ const handleCountryChange = async (e) => {
 console.log(barState)
   useEffect(() => {
     const fetchData = async() => {
-        const dailyData  = await fetch("https://covid19.mathdro.id/api/daily");
+        const dailyData  = await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120");
         const newDailyData = await dailyData.json();
-        const modifiedNewDailyData = 
-        newDailyData.map(dailyData => ({
-            confirmed: dailyData.confirmed.total,
-            deaths: dailyData.deaths.total,
-            date: dailyData.reportDate,
-          }));
+        console.log(newDailyData)
+      //  const modifiedNewDailyData =
+      //    newDailyData &&  Object.entries(newDailyData).map(({ cases, recovered, deaths }) =>{
+      //      return (
+      //        {cases: newDailyData["cases"], 
+      //      recovered: newDailyData["recovered"], 
+      //      deaths: newDailyData["deaths"]}
+      //      )})
 
-        setDaily(modifiedNewDailyData);
+        setDaily(newDailyData);
         
        }
 
        fetchData();
    }, [])
  
-
+console.log(daily)
   return (
     <div className={styles.container}>
       
@@ -115,17 +101,17 @@ console.log(barState)
     countryState={countryState.country}
     />
   
-    <Cards 
-    countryState = {countryState.data}
-          />
-          <BarChart barState = {barState.data} barCountry = {barState.country} />
+    <Cards countryState = {countryState.data}/>
+    <BarChart barState = {barState.data} barCountry = {barState.country} />
     <Charts daily = {daily} />
+    <Map location = {location} zoomLevel={1}/>
+    
+  
     
     </div>
   );
 }
-//data= {barState.data} country= {barState.country}
-// barCountry={barState.country}  barState= {barState.data}
+
 export default App;
 
 

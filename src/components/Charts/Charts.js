@@ -3,27 +3,38 @@ import React from 'react'
 import { Line } from 'react-chartjs-2'
 
 
-function Charts({daily}) {
+function Charts({daily: {cases, recovered, deaths}}) {
+    console.log(cases)
 
    const chartData = (
-       daily.length
+       cases && cases
        ? ( 
        <Line
                 data = {{
-                    labels: daily.map(( { date }) => date),
+                    labels: Object.keys(cases),
                     datasets: [ {
-                        data: daily.map( ({ confirmed })=> confirmed),
+                        data: Object.values(cases),
                         label: 'Infected',
                         borderColor: '#3333ff',
                         backgroundColor: "#b4ffff",
                         fill: true
+                    }, { 
+                        // labels: Object.keys(recovered),
+                       
+                        data: Object.values(recovered),
+                        label: 'Recovered',
+                        borderColor: 'green',
+                        backgroundColor: 'rgba(0, 255, 0, 0.5)',
+                        fill: true
                     }, {
-                        data: daily.map( ({ deaths })=> deaths),
+                    // labels: Object.keys(deaths),
+                   
+                        data: Object.values(deaths),
                         label: 'Deaths',
                         borderColor: 'red',
                         backgroundColor: '#ff867c',
                         fill: true
-                    }]
+                    },],
                 }}
             />
    ) : null);

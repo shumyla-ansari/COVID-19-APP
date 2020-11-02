@@ -2,10 +2,10 @@ import React from 'react'
 //import Chart from 'chart.js'
 import {  Bar } from 'react-chartjs-2'
 //
-function BarChart({barState: {lastUpdate, recovered, deaths, confirmed}, barCountry}) {
+function BarChart({barState: {lastUpdate, recovered, deaths, cases}, barCountry}) {
     //console.log(confirmed)
  const barChart = (
- barCountry &&    confirmed
+ barCountry &&    cases
         ?(
             <Bar 
             data={{
@@ -17,7 +17,7 @@ function BarChart({barState: {lastUpdate, recovered, deaths, confirmed}, barCoun
                   'rgba(0, 255, 0, 0.5)',
                   'rgba(255, 0, 0, 0.5)',
                     ],
-                    data:[confirmed.value, recovered.value, deaths.value]
+                    data:[cases, recovered, deaths]
 
                     //data:[confirmed.value, recovered.value, deaths.value]
                 }],
