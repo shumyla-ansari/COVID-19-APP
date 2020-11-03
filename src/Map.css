@@ -15,11 +15,12 @@
     display: flex;
     align-items: center;
     width: 100px;
-    color: var(--main-blue);
+    color: #e53935;
+ 
   }
   
   .pin-icon {
-    font-size: 1vh;
+    font-size: 2vh;
   }
   
   .pin-text {
@@ -37,11 +38,11 @@
     }
   
     .pin {
-      width: 15vw;
+      width: 12vw;
     }
   
     .pin-icon {
-      font-size: 10vw;
+      font-size: 2vw;
     }
   }
   

@@ -1,3 +1,4 @@
+import { Opacity } from '@material-ui/icons';
 import React from 'react'
 //import Chart from 'chart.js'
 import { Line } from 'react-chartjs-2'
@@ -16,7 +17,8 @@ function Charts({daily: {cases, recovered, deaths}}) {
                         data: Object.values(cases),
                         label: 'Infected',
                         borderColor: '#3333ff',
-                        backgroundColor: "#b4ffff",
+                        backgroundColor: "rgba(0, 0, 255, 0.5)",
+                        opacity: "50%",
                         fill: true
                     }, { 
                         // labels: Object.keys(recovered),
@@ -25,6 +27,7 @@ function Charts({daily: {cases, recovered, deaths}}) {
                         label: 'Recovered',
                         borderColor: 'green',
                         backgroundColor: 'rgba(0, 255, 0, 0.5)',
+                        opacity: "50%",
                         fill: true
                     }, {
                     // labels: Object.keys(deaths),
@@ -32,7 +35,8 @@ function Charts({daily: {cases, recovered, deaths}}) {
                         data: Object.values(deaths),
                         label: 'Deaths',
                         borderColor: 'red',
-                        backgroundColor: '#ff867c',
+                        backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                        Opacity: "50%",
                         fill: true
                     },],
                 }}
