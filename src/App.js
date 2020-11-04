@@ -28,6 +28,7 @@ function App() {
   const [mapZoom, setMapZoom] = useState(3);
   const [mapCountries, setMapCountries] = useState([]);
   const [ daily, setDaily ] = useState([]);
+  const [ infoWindow, setInfoWindow ] = useState({})
 
 
 useEffect(() => {
@@ -72,14 +73,16 @@ const handleCountryChange = async (e) => {
     const data = await response.json()
 
     console.log(countryCode)
- 
+ console.log(data)
   setCountryState({
    data: data, country: countryCode
   })
   setBarState({
     data: data, country: countryCode
    })
-  
+  setInfoWindow(countryCode && countryCode ==="Global" ?
+  {lat: 34.80746, lng: -40.4796} : {data: data})
+console.log(data)
   setMapCenter(countryCode && countryCode ==="Global" ?
   {lat: 34.80746, lng: -40.4796} 
   : [data.countryInfo.lat, data.countryInfo.long]
@@ -111,7 +114,7 @@ console.log(countryState)
   
     <Cards countryState = {countryState.data}/>
     <Map countries={mapCountries} location={location }center={mapCenter}
-          zoom={mapZoom} />
+          zoom={mapZoom} info ={infoWindow.data} />
     <BarChart barState = {barState.data} barCountry = {barState.country} />
     <Charts daily = {daily} />
     

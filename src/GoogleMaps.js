@@ -2,10 +2,9 @@ import React,{useState} from 'react';
 import GoogleMapReact from 'google-map-react';
 import './Map.css'
 import Marker from './Marker'
-// import numeral from "numeral";
- import Circle from 'google-map-react'
- import InfoWindow from 'google-map-react';
-
+//import InfoWindow from './InfoWindow'
+import numeral from "numeral";
+import { v4 as uuidv4 } from "uuid";
 
 const casesTypeColors = {
     cases: {
@@ -28,20 +27,20 @@ const casesTypeColors = {
     },
   };
 //{ countries, casesType, center, zoom, location }
-const Map = ({countries, location, zoom, center}) =>{ 
+const Map = ({countries, location, zoom, center, info}) =>{ 
 
-//     const [infoWindowState, setInfoWindowState] = useState({
-//         showingInfoWindow: false,
-//         activeMarker: {},
-//         selectedPlace: {},
-//       });
+    const [infoWindowState, setInfoWindowState] = useState({
+        showingInfoWindow: false,
+        //activeMarker: {},
+        //selectedPlace: {},
+      });
 
-//     const onMarkerClick = (props, marker, e) =>
-//     setInfoWindowState({
-//       selectedPlace: props,
-//       activeMarker: marker,
-//       showingInfoWindow: true
-//     });
+    const onMarkerClick = (props, marker, e) =>
+     setInfoWindowState({
+    // //   selectedPlace: props,
+      activeMarker: marker,
+      showingInfoWindow: true
+     });
  
 //   const onMapClicked = (props) => {
 //       setInfoWindowState({
@@ -49,35 +48,53 @@ const Map = ({countries, location, zoom, center}) =>{
 //         activeMarker: null
 //       })
 //     }
-  
+
+   function InfoWindow() {
+    // if (info === ""){
+    //     return null
+    // }
+    // else {
+ 
+  return (
+          <div className="info-window">
+                <div className="info-container">
+                  <div
+                    className="info-flag"
+                    
+                    style={{ backgroundImage: `url(${info.countryInfo.flag})` }}
+                  ></div>
+                  <div className="info-name">{info.country}</div>
+                  <div className="info-confirmed">
+                    Cases: {numeral(info.cases).format("0,0")}
+                  </div>
+                  <div className="info-recovered">
+                    Recovered: {numeral(info.recovered).format("0,0")}
+                  </div>
+                  <div className="info-deaths">
+                    Deaths: {numeral(info.deaths).format("0,0")}
+                  </div>
+                </div>
+            </div>
+        )
     
+}
 return(
     <div className="map">
       <h2 className="map-h2">Come Visit Us At Our Campus</h2>
   
       <div className="google-map">
-   {countries &&  <GoogleMapReact
+   {countries ? 
+   <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_APIKEY }}
           center={{lat:center[0], lng:center[1]}}
           zoom={zoom}
           //yesIWantToUseGoogleMapApiInternals
           //onMapClicked={onMapClicked}
-        >
+        > 
 
-{/* {countries &&  countries.map((country) => (<Circle
-        radius={800}
-        center=  {[country.countryInfo.lat, country.countryInfo.long]}     
-        onMouseover={() => console.log('mouseover')}
-        onClick={() => console.log('click')}
-        onMouseout={() => console.log('mouseout')}
-        strokeColor='transparent'
-        strokeOpacity={0}
-        strokeWeight={5}
-        fillColor='#FF0000'
-        fillOpacity={0.2}
-      />))} */}
+
           {countries && <Marker
-         // onClick={onMarkerClick}
+         onClick={onMarkerClick}
           lat={center[0]}
           lng={center[1]}
           title={'The marker`s title will appear as a tooltip.'}
@@ -91,7 +108,8 @@ return(
 
 {countries.map(position => (
         <Marker
-         // onClick={onMarkerClick}
+        key={uuidv4()}
+          //onClick={onMarkerClick}
           lat={position.countryInfo.lat}
           lng={position.countryInfo.long}
           title={'The marker`s title will appear as a tooltip.'}
@@ -101,29 +119,12 @@ return(
         //     anchor: new google.maps.Point(32,32),
         //     scaledSize: new google.maps.Size(64,64)
         //   }}
-        />
-))}
-{/* 
-        <InfoWindow
-       onOpen={this.windowHasOpened}
- onClose={this.windowHasClosed}
-  visible={infoWindowState}>
-    <div>
-      <h1>{'Hello this is'}</h1>
-    </div>
-        marker={infoWindowState}
-        visible={infoWindowState}
-          <div>
-            <h1>{'infected'}</h1>
-          </div>
-      </InfoWindow> */}
-     {/* {countries.map(position => ( 
-         {{ lat: position.countryInfo.lat, lng: position.countryInfo.long }}}*/
-     
-    //   {/* ))} */}
-       
     
-     }</GoogleMapReact> }
+       />
+))}
+{info && infoWindowState && <InfoWindow />}
+ 
+     </GoogleMapReact> : null}
       </div>
       </div>
 )
