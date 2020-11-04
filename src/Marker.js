@@ -2,14 +2,21 @@ import React from 'react'
 import { Icon } from '@iconify/react'
 import locationIcon from '@iconify/icons-mdi/map-marker'
 
-function Marker({Hello}) {
+function Marker({onClickPin, title}) {
 
+  function MouseOver({title}){
+    return(
+      
+        <p className="pin-text">{title}</p>
+    )
+  }
 
     return (
     
    <div className="pin">
-    <Icon icon={locationIcon} className="pin-icon" />
-    <p className="pin-text">{Hello}</p>
+    <Icon  onClick={(e) => onClickPin(e)} icon={locationIcon} className="pin-icon"
+     onMouseOver={MouseOver}/>
+
   </div>
     
     )

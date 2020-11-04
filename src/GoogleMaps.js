@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import GoogleMapReact from 'google-map-react';
 import './Map.css'
 import Marker from './Marker'
-//import InfoWindow from './InfoWindow'
+import InfoWindow from './InfoWindow'
 import numeral from "numeral";
 import { v4 as uuidv4 } from "uuid";
 
@@ -27,20 +27,18 @@ const casesTypeColors = {
     },
   };
 //{ countries, casesType, center, zoom, location }
+
 const Map = ({countries, location, zoom, center, info}) =>{ 
 
-    const [infoWindowState, setInfoWindowState] = useState({
-        showingInfoWindow: false,
-        //activeMarker: {},
-        //selectedPlace: {},
-      });
-
-    const onMarkerClick = (props, marker, e) =>
-     setInfoWindowState({
-    // //   selectedPlace: props,
-      activeMarker: marker,
-      showingInfoWindow: true
-     });
+    const [infoWindowState, setInfoWindowState] = useState(false);
+console.log(info)
+    //   function onMarkerClick(e, props){
+    //     console.log("I am clicked")}
+    //      setInfoWindowState({
+    //     // // //   selectedPlace: props,
+    //     //   activeMarker: marker,
+    //       showingInfoWindow: true
+    //      });
  
 //   const onMapClicked = (props) => {
 //       setInfoWindowState({
@@ -49,38 +47,9 @@ const Map = ({countries, location, zoom, center, info}) =>{
 //       })
 //     }
 
-   function InfoWindow() {
-    // if (info === ""){
-    //     return null
-    // }
-    // else {
- 
-  return (
-          <div className="info-window">
-                <div className="info-container">
-                  <div
-                    className="info-flag"
-                    
-                    style={{ backgroundImage: `url(${info.countryInfo.flag})` }}
-                  ></div>
-                  <div className="info-name">{info.country}</div>
-                  <div className="info-confirmed">
-                    Cases: {numeral(info.cases).format("0,0")}
-                  </div>
-                  <div className="info-recovered">
-                    Recovered: {numeral(info.recovered).format("0,0")}
-                  </div>
-                  <div className="info-deaths">
-                    Deaths: {numeral(info.deaths).format("0,0")}
-                  </div>
-                </div>
-            </div>
-        )
-    
-}
 return(
     <div className="map">
-      <h2 className="map-h2">Come Visit Us At Our Campus</h2>
+      <h2 className="map-h2">Global Corona Cases</h2>
   
       <div className="google-map">
    {countries ? 
@@ -88,32 +57,35 @@ return(
           bootstrapURLKeys={{ key: process.env.REACT_APP_APIKEY }}
           center={{lat:center[0], lng:center[1]}}
           zoom={zoom}
+          onClick={(e) => setInfoWindowState(true)}
+          
           //yesIWantToUseGoogleMapApiInternals
           //onMapClicked={onMapClicked}
         > 
 
-
+{/* 
           {countries && <Marker
          onClick={onMarkerClick}
           lat={center[0]}
           lng={center[1]}
           title={'The marker`s title will appear as a tooltip.'}
-          name={'SOMA'}
+          name={'SOMA'} 
         //   icon={{
         //     url: "/path/to/custom_icon.png",
         //     anchor: new google.maps.Point(32,32),
         //     scaledSize: new google.maps.Size(64,64)
         //   }}
-        />}
+        ///>
+          //  } */}
 
 {countries.map(position => (
         <Marker
         key={uuidv4()}
-          //onClick={onMarkerClick}
+          onClickPin={(e) => setInfoWindowState(true)}
           lat={position.countryInfo.lat}
           lng={position.countryInfo.long}
-          title={'The marker`s title will appear as a tooltip.'}
-          name={'SOMA'}
+          title={position.country}
+          //name={position.country}
         //   icon={{
         //     url: "/path/to/custom_icon.png",
         //     anchor: new google.maps.Point(32,32),
@@ -122,7 +94,14 @@ return(
     
        />
 ))}
-{info && infoWindowState && <InfoWindow />}
+{  infoWindowState && countries ? ( <InfoWindow  
+        flag = {info.countryInfo.flag}
+        name = {info.country}
+        cases = {numeral(info.cases).format("0,0")}
+        infected = {numeral(info.recovered).format("0,0")}
+        deaths = {numeral(info.deaths).format("0,0")}
+
+          />) : null }
  
      </GoogleMapReact> : null}
       </div>

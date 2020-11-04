@@ -49,18 +49,22 @@ useEffect(() => {
 
 console.log(barState)
 
-useEffect(() => {
+useEffect((e) => {
   const getCountriesData = async () => {
    const response = await fetch("https://disease.sh/v3/covid-19/countries")
     const data  = await response.json()
-        setMapCountries(data);      
+        setMapCountries(data); 
+
+       setInfoWindow(
+        data)
+           
   };
 
   getCountriesData();
 }, []);
 
 console.log(mapCountries);
-
+console.log(infoWindow)
 console.log(countryState)
 const handleCountryChange = async (e) => {
   const countryCode = e.target.value;
