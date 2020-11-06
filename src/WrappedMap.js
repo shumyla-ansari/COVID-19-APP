@@ -16,6 +16,7 @@ function Map({ countries, location, zoom, center, info, }) {
   console.log(countries);
 
   return (
+
     
     <GoogleMap zoom={zoom} center={{ lat: center[0], lng: center[1] }}>
       {countries &&
