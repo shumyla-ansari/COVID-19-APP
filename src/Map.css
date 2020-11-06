@@ -87,7 +87,7 @@ color: blue;
   }
 
   .map {
-    height: auto;
+    height: 1000px;
     background-color: white;
     padding: 1rem;
     border-radius: 20px;

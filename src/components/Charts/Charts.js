@@ -1,6 +1,5 @@
-import { Opacity } from '@material-ui/icons';
 import React from 'react'
-//import Chart from 'chart.js'
+import "./charts.css"
 import { Line } from 'react-chartjs-2'
 
 
@@ -49,7 +48,7 @@ function Charts({daily: {cases, recovered, deaths}}) {
 
     return (
         <div >
-           
+           <h1 className="chart-h1">Global Cases Chart</h1>
             { chartData}
 
         </div>

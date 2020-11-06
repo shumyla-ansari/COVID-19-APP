@@ -4,7 +4,7 @@ import Cards from './components/Cards/Cards'
 import Charts from './components/Charts/Charts'
 import styles from './App.module.css'
 import BarChart from './components/Charts/BarChart'
-import Map from './GoogleMaps'
+import {MapWrapped} from './WrappedMap'
 
 function App() {
 
@@ -13,6 +13,7 @@ function App() {
     lat: parseFloat(33), 
     lng: parseFloat(65),
   }  
+
 
   const [barState, setBarState] = useState({
     data: {},
@@ -66,8 +67,16 @@ useEffect((e) => {
 console.log(mapCountries);
 console.log(infoWindow)
 console.log(countryState)
+
+// const handleIconClick =  async (e) => {
+  
+
+// }
+
 const handleCountryChange = async (e) => {
   const countryCode = e.target.value;
+
+  
 
   const url =
       countryCode === "Global"
@@ -117,8 +126,20 @@ console.log(countryState)
     />
   
     <Cards countryState = {countryState.data}/>
-    <Map countries={mapCountries} location={location }center={mapCenter}
-          zoom={mapZoom} info ={infoWindow.data} />
+    <MapWrapped
+    
+     googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
+      process.env.REACT_APP_APIKEY
+    }`}
+    loadingElement={<div className = "google-map" />}
+    containerElement={<div className = "google-map" />}
+    mapElement={<div className = "google-map" />}
+        countries={mapCountries} location={location }center={mapCenter}
+        zoom={mapZoom} info ={infoWindow.data}
+      />
+  
+    {/* <MapContainer countries={mapCountries} location={location }center={mapCenter}
+          zoom={mapZoom} info ={infoWindow.data} /> */}
     <BarChart barState = {barState.data} barCountry = {barState.country} />
     <Charts daily = {daily} />
     
