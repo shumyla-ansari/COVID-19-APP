@@ -13,40 +13,9 @@ import {
 function Map({ countries, location, zoom, center, info, }) {
   const [selectedInfo, setSelectedInfo] = useState(false)
 
-  
-// const onClickHandle = (country) => {
-//   setSelectedInfo({
-//     isOpen : true
-//   ,
-//   position : {
-//     lat: country.countryInfo.lat,
-//     lng: country.countryInfo.long,
-//   }
-// })}
-
-// const onCloseHandle = () => {
-//   setSelectedInfo({
-//     isOpen : false
-//   })
-// }
-
   console.log(countries);
 
-  // useEffect(() => {
-  //   const listener = (e) => {
-  //     if (e.key === "Escape") {
-  //       setSelectedInfo(null);
-  //     }
-  //   };
-  //   window.addEventListener("keydown", listener);
-
-  //   return () => {
-  //     window.removeEventListener("keydown", listener);
-  //   };
-  // }, []);
-
   return (
-
     
     <GoogleMap zoom={zoom} center={{ lat: center[0], lng: center[1] }}>
       {countries &&
