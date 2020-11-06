@@ -3,98 +3,155 @@ import SearchAppBar from './components/Navbar/Navbar'
 import Cards from './components/Cards/Cards'
 import Charts from './components/Charts/Charts'
 import styles from './App.module.css'
+import BarChart from './components/Charts/BarChart'
+import {MapWrapped} from './WrappedMap'
 
 function App() {
 
-  const [countryState, setCountryState] = useState(0);
-  //const [update, setUpdate] = useState({});
-  const [fetchedCountries, setfetchedCountries] = useState([]);
+  const location = {
+    address: 'NHS LONDON',
+    lat: parseFloat(33), 
+    lng: parseFloat(65),
+  }  
+
+
+  const [barState, setBarState] = useState({
+    data: {},
+    country: "Global",
+  })
+     
+  const [countryState, setCountryState] = useState({
+    data: {},
+    country: "Global",
+  })
+
+  const [mapCenter, setMapCenter] = useState([34.80746, -40.4796] );
+  const [mapZoom, setMapZoom] = useState(3);
+  const [mapCountries, setMapCountries] = useState([]);
   const [ daily, setDaily ] = useState([]);
+  const [ infoWindow, setInfoWindow ] = useState({})
+
+
+useEffect(() => {
+  const fetchCountryData = async () => {
+  const response = await fetch("https://disease.sh/v3/covid-19/all")
+    const data = await response.json()
+     setBarState({
+       data: data})
+
+      setCountryState({
+        data: data
+        
+      });
+    }
+ 
+    fetchCountryData()
+}, []);
+
+console.log(barState)
+
+useEffect((e) => {
+  const getCountriesData = async () => {
+   const response = await fetch("https://disease.sh/v3/covid-19/countries")
+    const data  = await response.json()
+        setMapCountries(data); 
+
+       setInfoWindow(
+        data)
+           
+  };
+
+  getCountriesData();
+}, []);
+
+console.log(mapCountries);
+console.log(infoWindow)
+console.log(countryState)
+
+// const handleIconClick =  async (e) => {
   
-  useEffect(() => {
-     const getData = async() => {
 
+// }
 
-        const data = await fetch("https://covid19.mathdro.id/api/");
-       const results = await data.json();
+const handleCountryChange = async (e) => {
+  const countryCode = e.target.value;
 
-       // const timeUpdate = await fetch("https://covid19.mathdro.id/api/");
-        //const responseTimeUpdate = await timeUpdate.json();
-        // const modifiedData = {
-        //   infected: results.confirmed,
-        //   recovered: results.recovered,
-        //   deaths: results.deaths,
-        // };
-        // const modifiedTime = {
-        //   lastUpdate: responseTimeUpdate.lastUpdate,
-      
-       setCountryState(results);
-      // setUpdate(modifiedTime);
-    
-     }
-     getData();
-   
-   }, []);
   
- console.log(countryState)
-// console.log(update)
-  // const url = "https://covid19.mathdro.id/api/"
-        // let changeableUrl = url ;
-    
-        // if(country) {
-        //   changeableUrl = `${url}/countries/${country}`
-        // }
 
+  const url =
+      countryCode === "Global"
+        ? "https://disease.sh/v3/covid-19/all"
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+    const response = await fetch(url)
+    const data = await response.json()
+
+    console.log(countryCode)
+ console.log(data)
+  setCountryState({
+   data: data, country: countryCode
+  })
+  setBarState({
+    data: data, country: countryCode
+   })
+  setInfoWindow(countryCode && countryCode ==="Global" ?
+  {lat: 34.80746, lng: -40.4796} : {data: data})
+console.log(data)
+  setMapCenter(countryCode && countryCode ==="Global" ?
+  {lat: 34.80746, lng: -40.4796} 
+  : [data.countryInfo.lat, data.countryInfo.long]
+   );
+   setMapZoom(countryCode && countryCode === "Global" ? 2.5 : 8)
+ };
+
+ console.log(mapCenter)
+console.log(countryState)
   useEffect(() => {
     const fetchData = async() => {
-        const dailyData  = await fetch("https://covid19.mathdro.id/api/daily");
+        const dailyData  = await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120");
         const newDailyData = await dailyData.json();
-        const modifiedNewDailyData = 
-        newDailyData.map(dailyData => ({
-            confirmed: dailyData.confirmed.total,
-            deaths: dailyData.deaths.total,
-            date: dailyData.reportDate,
-          }));
-
-        setDaily(modifiedNewDailyData);
+        console.log(newDailyData)
+        setDaily(newDailyData);
         
        }
 
        fetchData();
    }, [])
 
-useEffect(() => {
-  const countries = async() =>{
-  const response = await fetch("https://covid19.mathdro.id/api/countries")
-  const countryResponse = await response.json();
-  const newCountry = countryResponse.countries.map(key => {
-    return(
-key.name
-)})
-  setfetchedCountries(newCountry)
-  }
-  countries();
-}, [setfetchedCountries])
-
-  // const handleCountryChange = async (country) => {
-  //   const getData = await getData();
-  // }
-
   return (
     <div className={styles.container}>
       
-    <SearchAppBar  fetchedCountries={fetchedCountries} />
+    <SearchAppBar  
+    handleCountryChange ={handleCountryChange}
+    countryState={countryState.country}
+    />
+  
+    <Cards countryState = {countryState.data}/>
+    <MapWrapped
     
-    <Cards 
-    countryState = {countryState}
-          />
+     googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
+      process.env.REACT_APP_APIKEY
+    }`}
+    loadingElement={<div className = "google-map" />}
+    containerElement={<div className = "google-map" />}
+    mapElement={<div className = "google-map" />}
+        countries={mapCountries} location={location }center={mapCenter}
+        zoom={mapZoom} info ={infoWindow.data}
+      />
+  
+    {/* <MapContainer countries={mapCountries} location={location }center={mapCenter}
+          zoom={mapZoom} info ={infoWindow.data} /> */}
+    <BarChart barState = {barState.data} barCountry = {barState.country} />
     <Charts daily = {daily} />
+    
+  {/* countries={mapCountries}
+          //casesType={casesType}
+          center={mapCenter}
+          zoom={mapZoom}
+          location={location} */}
+    
     </div>
   );
 }
 
 export default App;
 
-
-{/* <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/microbe_1f9a0.png" alt="corona" width="100px"></img> */}
-    {/* <img src="https://media.giphy.com/media/dVuyBgq2z5gVBkFtDc/giphy.gif" alt="corona-gif" width="200px"></img> */}

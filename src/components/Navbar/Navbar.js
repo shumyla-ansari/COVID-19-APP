@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -6,12 +6,20 @@ import Typography from '@material-ui/core/Typography';
 import InputLabel from '@material-ui/core/InputLabel';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import { NativeSelect, FormControl } from '@material-ui/core';
+import { Select, FormControl, MenuItem } from '@material-ui/core';
 import { v4 as uuidv4 } from "uuid";
 
 
 
 const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+
   root: {
     flexGrow: 1,
   },
@@ -66,9 +74,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar({fetchedCountries}) {
+export default function SearchAppBar({ handleCountryChange },{ countryState}) {
   
   const classes = useStyles();
+  
+  const [fetchedCountries, setfetchedCountries] = useState([]);
+  
+
+  useEffect(() => {
+    const countries = async() =>{
+    const response = await fetch("https://covid19.mathdro.id/api/countries")
+    const countryResponse = await response.json();
+    const newCountry = countryResponse.countries.map(key => {
+      return(
+  key.name
+  )})
+    setfetchedCountries(newCountry)
+    }
+    countries();
+  }, [])
+
 
   return (
     <div className={classes.root}>
@@ -87,20 +112,17 @@ export default function SearchAppBar({fetchedCountries}) {
           </Typography>
           
           <FormControl className={classes.formControl}>
-        <InputLabel shrink htmlFor="country-label-placeholder">
-          Country
-        </InputLabel>
-        <NativeSelect
-        //  value=""
-        //   onChange={(e) => handleCountryChange(e.target.value)}
-        //   inputProps={{
-        //     name: 'country',
-        //     id: 'country-label-placeholder',
-        //   }}
-        ><option value = "global">Global</option>
-          {fetchedCountries.map((country, key) =>{
-          return(<option key={uuidv4()} value={country}>{country}</option>)})}
-        </NativeSelect>
+          <InputLabel id="demo-simple-select-label">Global</InputLabel>
+         
+    <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+        defaultValue=""
+        onChange={handleCountryChange}>
+          <MenuItem value = "Global">Global</MenuItem>
+         {fetchedCountries && fetchedCountries.map((country, key) =>{
+          return(<MenuItem key={uuidv4()} value={country}>{country}</MenuItem>)})}
+        </Select>
       </FormControl>
         
         </Toolbar>

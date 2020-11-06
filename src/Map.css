@@ -1,0 +1,156 @@
+.map-h2 {
+    text-transform: uppercase;
+    font-size: 1rem;
+    padding: 20px;
+    padding-left: 10px;
+    text-align: center;
+  }
+  
+  .google-map {
+    width: 100%;
+    height: 60vh;
+  }
+  
+  .pin {
+    display: flex;
+    align-items: center;
+    width: 100px;
+    color: #e53935;
+    cursor: pointer;
+  }
+
+  .pin-icon:hover {
+font-size: 5vh;
+color: blue;
+ 
+  }
+  
+  .pin-icon {
+    font-size: 2vh;
+  }
+  
+  .pin-text {
+    font-size: 5px;
+  }
+  
+  @media screen and (min-width: 799px) {
+    .google-map {
+      height: 80vh;
+    }
+  
+    .map-h2 {
+      font-size: 1.3rem;
+      font-weight: 400;
+    }
+  
+    .pin {
+      width: 12vw;
+    }
+  
+    .pin-icon {
+      font-size: 2vw;
+    }
+  }
+
+  .infoBox {
+    flex: 1;
+  }
+  
+  .infoBox:not(:last-child) {
+    margin-right: 10px;
+  }
+  
+  .infoBox--selected {
+    border-top: 10px solid greenyellow;
+  }
+  
+  .infoBox--red {
+    border-color: red;
+  }
+  
+  .infoBox__cases--green {
+    color: lightgreen !important;
+  }
+  
+  .infoBox__cases {
+    color: #cc1034;
+    font-weight: 600;
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .infoBox__total {
+    color: #6c757d;
+    font-weight: 700 !important;
+    font-size: 0.8rem !important;
+    margin-top: 15px !important;
+  }
+
+  .map {
+    height: 1000px;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 20px;
+    margin-top: 16px;
+    box-shadow: 0 0 8px -4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .map .leaflet-container {
+    height: 100%;
+    border-radius: 12px;
+  }
+  
+  .info-flag img {
+    width: 100px;
+    border-radius: 5px;
+  }
+  
+  .info-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+  }
+  
+  /* .info-window {
+    width: 170px;
+    padding: 1px;
+    text-align: left;
+    border-radius: 12px;
+    background: #fff;
+    color: #333;
+    box-shadow: 0 3px 14px rgba(0,0,0,.4);
+  }  */
+
+  .info-container {
+    width: 150px;
+    background: #fff;
+    color: #333;
+    box-shadow: 0 3px 14px rgba(0,0,0,.4);
+    text-align: left;
+    border-radius: 12px;
+    font: 12px/1.5 "Helvetica Neue",Arial,Helvetica,sans-serif;
+    line-height: 1.4;
+    margin: 0;
+    padding: 9px
+  }
+  
+  .info-flag {
+    height: 80px;
+    width: 100%;
+    background-size: cover;
+    border-radius: 8px;
+  }
+  
+  .info-confirmed,
+  .info-recovered,
+  .info-deaths {
+    font-size: 16px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+  }
+  
+  

@@ -1,37 +1,55 @@
 import React from 'react'
-import Chart from 'chart.js'
-import { Line, Bar } from 'react-chartjs-2'
+import "./charts.css"
+import { Line } from 'react-chartjs-2'
 
 
-function Charts({daily}) {
+function Charts({daily: {cases, recovered, deaths}}) {
+    console.log(cases)
 
    const chartData = (
-       daily.length
+       cases && cases
        ? ( 
        <Line
                 data = {{
-                    labels: daily.map(( { date }) => date),
+                    labels: Object.keys(cases),
                     datasets: [ {
-                        data: daily.map( ({ confirmed })=> confirmed),
+                        data: Object.values(cases),
                         label: 'Infected',
                         borderColor: '#3333ff',
-                        backgroundColor: "lightblue",
+                        backgroundColor: "rgba(0, 0, 255, 0.5)",
+                        opacity: "50%",
+                        fill: true
+                    }, { 
+                        // labels: Object.keys(recovered),
+                       
+                        data: Object.values(recovered),
+                        label: 'Recovered',
+                        borderColor: 'green',
+                        backgroundColor: 'rgba(0, 255, 0, 0.5)',
+                        opacity: "50%",
                         fill: true
                     }, {
-                        data: daily.map( ({ deaths })=> deaths),
+                    // labels: Object.keys(deaths),
+                   
+                        data: Object.values(deaths),
                         label: 'Deaths',
                         borderColor: 'red',
                         backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                        Opacity: "50%",
                         fill: true
-                    }]
+                    },],
                 }}
             />
    ) : null);
 
+
+
+  
+
     return (
         <div >
-           
-            {chartData}
+           <h1 className="chart-h1">Global Cases Chart</h1>
+            { chartData}
 
         </div>
     )
