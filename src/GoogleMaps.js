@@ -31,6 +31,7 @@ const casesTypeColors = {
 const Map = ({countries, location, zoom, center, info}) =>{ 
 
     const [infoWindowState, setInfoWindowState] = useState(false);
+
 console.log(info)
     //   function onMarkerClick(e, props){
     //     console.log("I am clicked")}
@@ -56,7 +57,7 @@ return(
    <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_APIKEY }}
           center={{lat:center[0], lng:center[1]}}
-          zoom={zoom}
+          zoom={15}
           onClick={(e) => setInfoWindowState(true)}
           
           //yesIWantToUseGoogleMapApiInternals
@@ -82,6 +83,7 @@ return(
         <Marker
         key={uuidv4()}
           onClickPin={(e) => setInfoWindowState(true)}
+          //onClickPin ={(e) => clickIcon(e)}
           lat={position.countryInfo.lat}
           lng={position.countryInfo.long}
           title={position.country}
@@ -94,13 +96,13 @@ return(
     
        />
 ))}
-{  infoWindowState && countries ? ( <InfoWindow  
+{  infoWindowState && info ? ( <InfoWindow  
         flag = {info.countryInfo.flag}
         name = {info.country}
         cases = {numeral(info.cases).format("0,0")}
         infected = {numeral(info.recovered).format("0,0")}
         deaths = {numeral(info.deaths).format("0,0")}
-
+      
           />) : null }
  
      </GoogleMapReact> : null}

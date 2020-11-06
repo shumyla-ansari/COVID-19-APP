@@ -18,6 +18,11 @@
 .env.test.local
 .env.production.local
 
+Marker.js
+Reactgoogle.js
+InfoWindow.js
+GoogleMaps.js
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

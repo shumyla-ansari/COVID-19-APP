@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 1000,
     margin: "0 auto",
     marginTop: 50,
+    marginBottom: 50,
   },
   paper: {
     padding: theme.spacing(2),
@@ -29,8 +30,9 @@ export default function Cards({countryState: {lastUpdate, recovered, deaths, cas
           <h4>Last Updated: { lastUpdate && new Date(lastUpdate).toDateString()}</h4>
         </Grid>  
 
-              {cases &&   <Grid item xs={12} sm={4} key={uuidv4()}>
-                <Card elevation={3} className={classes.paper}>
+              {cases &&   <Grid item xs={12} sm={4} key={uuidv4()} >
+                <Card elevation={3} className={classes.paper} 
+                style={{ borderLeftStyle: "groove", borderWidth: "5px", borderColor: "orange" }} >
                   <h3>CONFIRMED</h3>
                   <h3>
                     <CountUp
@@ -46,7 +48,8 @@ export default function Cards({countryState: {lastUpdate, recovered, deaths, cas
            
                 {recovered && 
               <Grid item xs={12} sm={4} key={uuidv4()}>
-                <Card elevation={3} className={classes.paper}>
+                <Card elevation={3} className={classes.paper}
+                style={{ borderLeftStyle: "groove", borderWidth: "5px", borderColor: "green" }}>
                   <h3>RECOVERED</h3>
                   <h3>
                     <CountUp
@@ -61,7 +64,9 @@ export default function Cards({countryState: {lastUpdate, recovered, deaths, cas
   
                 {deaths && 
               <Grid item xs={12} sm={4} key={uuidv4()}>
-                <Card elevation={3} className={classes.paper}>
+              
+                <Card elevation={3} className={classes.paper} 
+                style={{ borderLeftStyle: "groove", borderWidth: "5px", borderColor: "red" }}>
                   <h3>DEATHS</h3>
                   <h3>
                     <CountUp
@@ -79,12 +84,3 @@ export default function Cards({countryState: {lastUpdate, recovered, deaths, cas
   );
 }
 
-
- {/* {Object.keys(update).map((key) => {
-        return(
-        <Card elevation={3} className={classes.paper}>
-          <h3>{key.toUpperCase()}</h3>
-          <h3>{update[key] === update["lastUpdate"] && (new Date(update[key]).toDateString())}</h3> 
-
-        </Card> */}
-        {/* )})} */}
